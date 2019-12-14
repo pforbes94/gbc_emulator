@@ -1,7 +1,9 @@
 set(gbc_components_SRCS
+    include/gbc_components/instruction_set.h
     include/gbc_components/memory.h
     include/gbc_components/processor.h
 
+    src/instruction_set.c
     src/memory.c
     src/processor.c
 )
