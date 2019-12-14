@@ -1,3 +1,6 @@
+#ifndef GBC_COMPONENTS_MEMORY_H
+#define GBC_COMPONENTS_MEMORY_H
+
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -28,3 +31,5 @@ inline void release_memory(Memory* memory)
 {
     free(memory->memory);
 }
+
+#endif /* GBC_COMPONENTS_MEMORY_H */

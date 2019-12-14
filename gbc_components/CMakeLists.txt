@@ -1,7 +1,9 @@
 set(gbc_components_SRCS
     include/gbc_components/memory.h
+    include/gbc_components/processor.h
 
     src/memory.c
+    src/processor.c
 )
 
 add_library(gbc_components SHARED ${gbc_components_SRCS})
