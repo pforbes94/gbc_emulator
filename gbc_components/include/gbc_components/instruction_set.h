@@ -128,3 +128,26 @@ void opcode_0x66(Processor* processor);
 void opcode_0x6E(Processor* processor);
 
 /** @} */ // End of Load Memory Address into 8-Bit Register
+
+/**
+ * @defgroup Load 8-bit Register Content Into Memory
+ * Load the contents of some register into the memory address pointed to by (HL)
+ */
+
+#define LOAD_REGISTER_INTO_HL_PTR_INSTRUCTION_DEFINITION(OPCODE, REGISTER)             \
+    void opcode_##OPCODE(Processor* processor)                                         \
+    {                                                                                  \
+        uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);      \
+        processor->memory->memory[addr] = processor->REGISTER;                         \
+        ++processor->PC;                                                               \
+    }
+
+void opcode_0x77(Processor* processor);
+void opcode_0x70(Processor* processor);
+void opcode_0x71(Processor* processor);
+void opcode_0x72(Processor* processor);
+void opcode_0x73(Processor* processor);
+void opcode_0x74(Processor* processor);
+void opcode_0x75(Processor* processor);
+
+/** @} */ // End of Load 8-bit Register Content Into Memory
