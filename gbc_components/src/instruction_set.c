@@ -566,3 +566,184 @@ void opcode_0xFB(Processor* processor)
     processor->interrupts_enabled = true;
     ++processor->PC;
 }
+
+/// Shifts in Standard ISA
+
+void opcode_0x07(Processor* processor)
+{
+    uint8_t msb = processor->A & 0x80;
+    processor->A <<= 1;
+    processor->A |= msb >> 7;
+    processor->F |= msb >> 3;
+    ++processor->PC;
+}
+
+void opcode_0x17(Processor* processor)
+{
+    uint8_t msb = processor->A & 0x80;
+    uint8_t shifted_carry = (processor->F & 0x10) >> 4;
+    processor->A <<= 1;
+    processor->A |= shifted_carry;
+    processor->F |= msb >> 3;
+    ++processor->PC;
+}
+
+void opcode_0x0F(Processor* processor)
+{
+    uint8_t lsb = processor->A & 0x01;
+    processor->A >>= 1;
+    processor->A |= lsb << 7;
+    processor->F |= lsb << 4;
+    ++processor->PC;
+}
+
+void opcode_0x1F(Processor* processor)
+{
+    uint8_t lsb = processor->A & 0x01;
+    uint8_t shifted_carry = (uint8_t)((processor->F & 0x10) << 3);
+    processor->A >>= 1;
+    processor->A |= shifted_carry;
+    processor->F |= lsb << 4;
+    ++processor->PC;
+}
+
+/// Left-Rotate Value
+
+ROTATE_REGISTER_8_LEFT_INSTRUCTION_DEFINITION(0x07, A)
+ROTATE_REGISTER_8_LEFT_INSTRUCTION_DEFINITION(0x00, B)
+ROTATE_REGISTER_8_LEFT_INSTRUCTION_DEFINITION(0x01, C)
+ROTATE_REGISTER_8_LEFT_INSTRUCTION_DEFINITION(0x02, D)
+ROTATE_REGISTER_8_LEFT_INSTRUCTION_DEFINITION(0x03, E)
+ROTATE_REGISTER_8_LEFT_INSTRUCTION_DEFINITION(0x04, H)
+ROTATE_REGISTER_8_LEFT_INSTRUCTION_DEFINITION(0x05, L)
+
+void opcode_0xCB_0x06(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    uint8_t msb = processor->memory->memory[addr] & 0x80;
+    processor->memory->memory[addr] <<= 1;
+    processor->memory->memory[addr] |= msb >> 7;
+    processor->F |= msb >> 3;
+    ++processor->PC;
+}
+
+/// Left-Rotate Value through Carry
+
+ROTATE_REGISTER_8_LEFT_THROUGH_CARRY_INSTRUCTION_DEFINITION(0x17, A)
+ROTATE_REGISTER_8_LEFT_THROUGH_CARRY_INSTRUCTION_DEFINITION(0x10, B)
+ROTATE_REGISTER_8_LEFT_THROUGH_CARRY_INSTRUCTION_DEFINITION(0x11, C)
+ROTATE_REGISTER_8_LEFT_THROUGH_CARRY_INSTRUCTION_DEFINITION(0x12, D)
+ROTATE_REGISTER_8_LEFT_THROUGH_CARRY_INSTRUCTION_DEFINITION(0x13, E)
+ROTATE_REGISTER_8_LEFT_THROUGH_CARRY_INSTRUCTION_DEFINITION(0x14, H)
+ROTATE_REGISTER_8_LEFT_THROUGH_CARRY_INSTRUCTION_DEFINITION(0x15, L)
+
+void opcode_0xCB_0x16(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    uint8_t msb = processor->memory->memory[addr] & 0x80;
+    uint8_t shifted_carry = (processor->F & 0x10) >> 4;
+    processor->memory->memory[addr] <<= 1;
+    processor->memory->memory[addr] |= shifted_carry;
+    processor->F |= msb >> 3;
+    ++processor->PC;
+}
+
+/// Right-Rotate Value
+
+ROTATE_REGISTER_8_RIGHT_INSTRUCTION_DEFINITION(0x0F, A)
+ROTATE_REGISTER_8_RIGHT_INSTRUCTION_DEFINITION(0x08, B)
+ROTATE_REGISTER_8_RIGHT_INSTRUCTION_DEFINITION(0x09, C)
+ROTATE_REGISTER_8_RIGHT_INSTRUCTION_DEFINITION(0x0A, D)
+ROTATE_REGISTER_8_RIGHT_INSTRUCTION_DEFINITION(0x0B, E)
+ROTATE_REGISTER_8_RIGHT_INSTRUCTION_DEFINITION(0x0C, H)
+ROTATE_REGISTER_8_RIGHT_INSTRUCTION_DEFINITION(0x0D, L)
+
+void opcode_0xCB_0x0E(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    uint8_t lsb = processor->memory->memory[addr] & 0x01;
+    processor->memory->memory[addr] >>= 1;
+    processor->memory->memory[addr] |= lsb << 7;
+    processor->F |= lsb << 4;
+    ++processor->PC;
+}
+
+/// Right-Rotate Value through Carry
+
+ROTATE_REGISTER_8_RIGHT_THROUGH_CARRY_INSTRUCTION_DEFINITION(0x1F, A)
+ROTATE_REGISTER_8_RIGHT_THROUGH_CARRY_INSTRUCTION_DEFINITION(0x18, B)
+ROTATE_REGISTER_8_RIGHT_THROUGH_CARRY_INSTRUCTION_DEFINITION(0x19, C)
+ROTATE_REGISTER_8_RIGHT_THROUGH_CARRY_INSTRUCTION_DEFINITION(0x1A, D)
+ROTATE_REGISTER_8_RIGHT_THROUGH_CARRY_INSTRUCTION_DEFINITION(0x1B, E)
+ROTATE_REGISTER_8_RIGHT_THROUGH_CARRY_INSTRUCTION_DEFINITION(0x1C, H)
+ROTATE_REGISTER_8_RIGHT_THROUGH_CARRY_INSTRUCTION_DEFINITION(0x1D, L)
+
+void opcode_0xCB_0x1E(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    uint8_t lsb = processor->memory->memory[addr] & 0x01;
+    uint8_t shifted_carry = (uint8_t)((processor->F & 0x10) << 3);
+    processor->memory->memory[addr] >>= 1;
+    processor->memory->memory[addr] |= shifted_carry;
+    processor->F |= lsb << 4;
+    ++processor->PC;
+}
+
+/// Left-Shift Value into Carry
+
+SHIFT_REGISTER_8_LEFT_INTO_CARRY_INSTRUCTION_DEFINITION(0x27, A)
+SHIFT_REGISTER_8_LEFT_INTO_CARRY_INSTRUCTION_DEFINITION(0x20, B)
+SHIFT_REGISTER_8_LEFT_INTO_CARRY_INSTRUCTION_DEFINITION(0x21, C)
+SHIFT_REGISTER_8_LEFT_INTO_CARRY_INSTRUCTION_DEFINITION(0x22, D)
+SHIFT_REGISTER_8_LEFT_INTO_CARRY_INSTRUCTION_DEFINITION(0x23, E)
+SHIFT_REGISTER_8_LEFT_INTO_CARRY_INSTRUCTION_DEFINITION(0x24, H)
+SHIFT_REGISTER_8_LEFT_INTO_CARRY_INSTRUCTION_DEFINITION(0x25, L)
+
+void opcode_0xCB_0x26(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    uint8_t msb = processor->memory->memory[addr] & 0x80;
+    processor->memory->memory[addr] <<= 1;
+    processor->F |= msb >> 3;
+    ++processor->PC;
+}
+
+/// Right-Shift Value into Carry with MSB Pad
+
+SHIFT_REGISTER_8_RIGHT_INTO_CARRY_MSB_PAD_INSTRUCTION_DEFINITION(0x2F, A)
+SHIFT_REGISTER_8_RIGHT_INTO_CARRY_MSB_PAD_INSTRUCTION_DEFINITION(0x28, B)
+SHIFT_REGISTER_8_RIGHT_INTO_CARRY_MSB_PAD_INSTRUCTION_DEFINITION(0x29, C)
+SHIFT_REGISTER_8_RIGHT_INTO_CARRY_MSB_PAD_INSTRUCTION_DEFINITION(0x2A, D)
+SHIFT_REGISTER_8_RIGHT_INTO_CARRY_MSB_PAD_INSTRUCTION_DEFINITION(0x2B, E)
+SHIFT_REGISTER_8_RIGHT_INTO_CARRY_MSB_PAD_INSTRUCTION_DEFINITION(0x2C, H)
+SHIFT_REGISTER_8_RIGHT_INTO_CARRY_MSB_PAD_INSTRUCTION_DEFINITION(0x2D, L)
+
+void opcode_0xCB_0x2E(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    uint8_t lsb = processor->memory->memory[addr] & 0x01;
+    uint8_t msb = processor->memory->memory[addr] & 0x80;
+    processor->memory->memory[addr] >>= 1;
+    processor->memory->memory[addr] |= msb;
+    processor->F |= lsb << 4;
+    ++processor->PC;
+}
+
+/// Right-Shift Value into Carry with Zero Pad
+
+SHIFT_REGISTER_8_RIGHT_INTO_CARRY_ZERO_PAD_INSTRUCTION_DEFINITION(0x3F, A)
+SHIFT_REGISTER_8_RIGHT_INTO_CARRY_ZERO_PAD_INSTRUCTION_DEFINITION(0x38, B)
+SHIFT_REGISTER_8_RIGHT_INTO_CARRY_ZERO_PAD_INSTRUCTION_DEFINITION(0x39, C)
+SHIFT_REGISTER_8_RIGHT_INTO_CARRY_ZERO_PAD_INSTRUCTION_DEFINITION(0x3A, D)
+SHIFT_REGISTER_8_RIGHT_INTO_CARRY_ZERO_PAD_INSTRUCTION_DEFINITION(0x3B, E)
+SHIFT_REGISTER_8_RIGHT_INTO_CARRY_ZERO_PAD_INSTRUCTION_DEFINITION(0x3C, H)
+SHIFT_REGISTER_8_RIGHT_INTO_CARRY_ZERO_PAD_INSTRUCTION_DEFINITION(0x3D, L)
+
+void opcode_0xCB_0x3E(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    uint8_t lsb = processor->memory->memory[addr] & 0x01;
+    processor->memory->memory[addr] >>= 1;
+    processor->F |= lsb << 4;
+    ++processor->PC;
+}

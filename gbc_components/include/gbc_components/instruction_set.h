@@ -365,6 +365,161 @@ void opcode_0x25(Processor* processor);
 void opcode_0x2D(Processor* processor);
 void opcode_0x35(Processor* processor);
 
+// Rotations
+
+void opcode_0x07(Processor* processor);
+void opcode_0x17(Processor* processor);
+void opcode_0x0F(Processor* processor);
+void opcode_0x1F(Processor* processor);
+
+// Rotate register contents left (not through carry)
+
+#define ROTATE_REGISTER_8_LEFT_INSTRUCTION_DEFINITION(OPCODE, REGISTER)               \
+    void opcode_0xCB_##OPCODE(Processor* processor)                                   \
+    {                                                                                 \
+        uint8_t msb = processor->REGISTER & 0x80;                                     \
+        processor->REGISTER <<= 1;                                                    \
+        processor->REGISTER |= msb >> 7;                                              \
+        processor->F |= msb >> 3;                                                     \
+        ++processor->PC;                                                              \
+    }
+
+void opcode_0xCB_0x07(Processor* processor);
+void opcode_0xCB_0x00(Processor* processor);
+void opcode_0xCB_0x01(Processor* processor);
+void opcode_0xCB_0x02(Processor* processor);
+void opcode_0xCB_0x03(Processor* processor);
+void opcode_0xCB_0x04(Processor* processor);
+void opcode_0xCB_0x05(Processor* processor);
+void opcode_0xCB_0x06(Processor* processor);
+
+// Rotate register contents left through carry
+
+#define ROTATE_REGISTER_8_LEFT_THROUGH_CARRY_INSTRUCTION_DEFINITION(OPCODE, REGISTER) \
+    void opcode_0xCB_##OPCODE(Processor* processor)                                   \
+    {                                                                                 \
+        uint8_t msb = processor->REGISTER & 0x80;                                     \
+        uint8_t shifted_carry = (processor->F & 0x10) >> 4;                           \
+        processor->REGISTER <<= 1;                                                    \
+        processor->REGISTER |= shifted_carry;                                         \
+        processor->F |= msb >> 3;                                                     \
+        ++processor->PC;                                                              \
+    }
+
+void opcode_0xCB_0x17(Processor* processor);
+void opcode_0xCB_0x10(Processor* processor);
+void opcode_0xCB_0x11(Processor* processor);
+void opcode_0xCB_0x12(Processor* processor);
+void opcode_0xCB_0x13(Processor* processor);
+void opcode_0xCB_0x14(Processor* processor);
+void opcode_0xCB_0x15(Processor* processor);
+void opcode_0xCB_0x16(Processor* processor);
+
+// Rotate register contents right (not through carry)
+
+#define ROTATE_REGISTER_8_RIGHT_INSTRUCTION_DEFINITION(OPCODE, REGISTER)    \
+    void opcode_0xCB_##OPCODE(Processor* processor)                         \
+    {                                                                       \
+        uint8_t lsb = processor->REGISTER & 0x01;                           \
+        processor->REGISTER >>= 1;                                          \
+        processor->REGISTER |= lsb << 7;                                    \
+        processor->F |= lsb << 4;                                           \
+        ++processor->PC;                                                    \
+    }
+
+void opcode_0xCB_0x0F(Processor* processor);
+void opcode_0xCB_0x08(Processor* processor);
+void opcode_0xCB_0x09(Processor* processor);
+void opcode_0xCB_0x0A(Processor* processor);
+void opcode_0xCB_0x0B(Processor* processor);
+void opcode_0xCB_0x0C(Processor* processor);
+void opcode_0xCB_0x0D(Processor* processor);
+void opcode_0xCB_0x0E(Processor* processor);
+
+// Rotate register contents right through carry
+
+#define ROTATE_REGISTER_8_RIGHT_THROUGH_CARRY_INSTRUCTION_DEFINITION(OPCODE, REGISTER) \
+    void opcode_0xCB_##OPCODE(Processor* processor)                                    \
+    {                                                                                  \
+        uint8_t lsb = processor->REGISTER & 0x01;                                      \
+        uint8_t shifted_carry = (uint8_t)((processor->F & 0x10) << 3);                 \
+        processor->REGISTER >>= 1;                                                     \
+        processor->REGISTER |= shifted_carry;                                          \
+        processor->F |= lsb << 4;                                                      \
+        ++processor->PC;                                                               \
+    }
+
+void opcode_0xCB_0x1F(Processor* processor);
+void opcode_0xCB_0x18(Processor* processor);
+void opcode_0xCB_0x19(Processor* processor);
+void opcode_0xCB_0x1A(Processor* processor);
+void opcode_0xCB_0x1B(Processor* processor);
+void opcode_0xCB_0x1C(Processor* processor);
+void opcode_0xCB_0x1D(Processor* processor);
+void opcode_0xCB_0x1E(Processor* processor);
+
+// Arithmetic left shift (into carry)
+
+#define SHIFT_REGISTER_8_LEFT_INTO_CARRY_INSTRUCTION_DEFINITION(OPCODE, REGISTER) \
+    void opcode_0xCB_##OPCODE(Processor* processor)                               \
+    {                                                                             \
+        uint8_t msb = processor->REGISTER & 0x80;                                 \
+        processor->REGISTER <<= 1;                                                \
+        processor->F |= msb >> 3;                                                 \
+        ++processor->PC;                                                          \
+    }
+
+void opcode_0xCB_0x27(Processor* processor);
+void opcode_0xCB_0x20(Processor* processor);
+void opcode_0xCB_0x21(Processor* processor);
+void opcode_0xCB_0x22(Processor* processor);
+void opcode_0xCB_0x23(Processor* processor);
+void opcode_0xCB_0x24(Processor* processor);
+void opcode_0xCB_0x25(Processor* processor);
+void opcode_0xCB_0x26(Processor* processor);
+
+// Arithmetic right shift (into carry) with MSB pad
+
+#define SHIFT_REGISTER_8_RIGHT_INTO_CARRY_MSB_PAD_INSTRUCTION_DEFINITION(OPCODE, REGISTER)  \
+    void opcode_0xCB_##OPCODE(Processor* processor)                                         \
+    {                                                                                       \
+        uint8_t lsb = processor->REGISTER & 0x01;                                           \
+        uint8_t msb = processor->REGISTER & 0x80;                                           \
+        processor->REGISTER >>= 1;                                                          \
+        processor->REGISTER |= msb;                                                         \
+        processor->F |= lsb << 4;                                                           \
+        ++processor->PC;                                                                    \
+    }
+
+void opcode_0xCB_0x2F(Processor* processor);
+void opcode_0xCB_0x28(Processor* processor);
+void opcode_0xCB_0x29(Processor* processor);
+void opcode_0xCB_0x2A(Processor* processor);
+void opcode_0xCB_0x2B(Processor* processor);
+void opcode_0xCB_0x2C(Processor* processor);
+void opcode_0xCB_0x2D(Processor* processor);
+void opcode_0xCB_0x2E(Processor* processor);
+
+// Arithmetic right shift (into carry) with zero pad
+
+#define SHIFT_REGISTER_8_RIGHT_INTO_CARRY_ZERO_PAD_INSTRUCTION_DEFINITION(OPCODE, REGISTER) \
+    void opcode_0xCB_##OPCODE(Processor* processor)                                         \
+    {                                                                                       \
+        uint8_t lsb = processor->REGISTER & 0x01;                                           \
+        processor->REGISTER >>= 1;                                                          \
+        processor->F |= lsb << 4;                                                           \
+        ++processor->PC;                                                                    \
+    }
+
+void opcode_0xCB_0x3F(Processor* processor);
+void opcode_0xCB_0x38(Processor* processor);
+void opcode_0xCB_0x39(Processor* processor);
+void opcode_0xCB_0x3A(Processor* processor);
+void opcode_0xCB_0x3B(Processor* processor);
+void opcode_0xCB_0x3C(Processor* processor);
+void opcode_0xCB_0x3D(Processor* processor);
+void opcode_0xCB_0x3E(Processor* processor);
+
 /** @} */ // End of 8-Bit ALU Operations
 
 /**
