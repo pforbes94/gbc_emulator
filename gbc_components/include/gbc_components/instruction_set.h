@@ -1,5 +1,6 @@
 #include "gbc_components/memory.h"
 #include "gbc_components/processor.h"
+#include "gbc_components/utils.h"
 
 /**
  * @defgroup 8-Bit Immediate Loads
@@ -171,3 +172,197 @@ void opcode_0x21(Processor* processor);
 void opcode_0x31(Processor* processor);
 
 /** @} */ // End of 16-Bit Immediate Loads
+
+/**
+ * @defgroup 8-Bit ALU Operations
+ * 8-bit arithmetic operations.
+ */
+
+// Add value to accumulator (A)
+
+#define ADD_REGISTER_8_TO_ACCUMULATOR_INSTRUCTION_DEFINITION(OPCODE, REGISTER) \
+    void opcode_##OPCODE(Processor* processor)                                 \
+    {                                                                          \
+        processor->A += processor->REGISTER;                                   \
+        ++processor->PC;                                                       \
+    }
+
+void opcode_0x87(Processor* processor);
+void opcode_0x80(Processor* processor);
+void opcode_0x81(Processor* processor);
+void opcode_0x82(Processor* processor);
+void opcode_0x83(Processor* processor);
+void opcode_0x84(Processor* processor);
+void opcode_0x85(Processor* processor);
+void opcode_0x86(Processor* processor);
+void opcode_0xC6(Processor* processor);
+
+// Add value + carry flag to accumulator (A)
+
+#define ADD_REGISTER_8_AND_CARRY_TO_ACCUMULATOR_INSTRUCTION_DEFINITION(OPCODE, REGISTER) \
+    void opcode_##OPCODE(Processor* processor)                                           \
+    {                                                                                    \
+        processor->A += processor->REGISTER + ((processor->F & 0x10) >> 4);              \
+        ++processor->PC;                                                                 \
+    }
+
+void opcode_0x8F(Processor* processor);
+void opcode_0x88(Processor* processor);
+void opcode_0x89(Processor* processor);
+void opcode_0x8A(Processor* processor);
+void opcode_0x8B(Processor* processor);
+void opcode_0x8C(Processor* processor);
+void opcode_0x8D(Processor* processor);
+void opcode_0x8E(Processor* processor);
+void opcode_0xCE(Processor* processor);
+
+// Subtract value from accumulator (A)
+
+#define SUB_REGISTER_8_FROM_ACCUMULATOR_INSTRUCTION_DEFINITION(OPCODE, REGISTER)  \
+    void opcode_##OPCODE(Processor* processor)                                    \
+    {                                                                             \
+        processor->A -= processor->REGISTER;                                      \
+        ++processor->PC;                                                          \
+    }
+
+void opcode_0x97(Processor* processor);
+void opcode_0x90(Processor* processor);
+void opcode_0x91(Processor* processor);
+void opcode_0x92(Processor* processor);
+void opcode_0x93(Processor* processor);
+void opcode_0x94(Processor* processor);
+void opcode_0x95(Processor* processor);
+void opcode_0x96(Processor* processor);
+void opcode_0xD6(Processor* processor);
+
+// Subtract value + carry flag from accumulator (A)
+
+#define SUB_REGISTER_8_AND_CARRY_FROM_ACCUMULATOR_INSTRUCTION_DEFINITION(OPCODE, REGISTER) \
+    void opcode_##OPCODE(Processor* processor)                                             \
+    {                                                                                      \
+        processor->A -= processor->REGISTER + ((processor->F & 0x10) >> 4);                \
+        ++processor->PC;                                                                   \
+    }
+
+void opcode_0x9F(Processor* processor);
+void opcode_0x98(Processor* processor);
+void opcode_0x99(Processor* processor);
+void opcode_0x9A(Processor* processor);
+void opcode_0x9B(Processor* processor);
+void opcode_0x9C(Processor* processor);
+void opcode_0x9D(Processor* processor);
+void opcode_0x9E(Processor* processor);
+
+// Logical AND value with accumulator (A)
+
+#define LOGICAL_AND_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(OPCODE, REGISTER) \
+    void opcode_##OPCODE(Processor* processor)                                           \
+    {                                                                                    \
+        processor->A &= processor->REGISTER;                                             \
+        ++processor->PC;                                                                 \
+    }
+
+void opcode_0xA7(Processor* processor);
+void opcode_0xA0(Processor* processor);
+void opcode_0xA1(Processor* processor);
+void opcode_0xA2(Processor* processor);
+void opcode_0xA3(Processor* processor);
+void opcode_0xA4(Processor* processor);
+void opcode_0xA5(Processor* processor);
+void opcode_0xA6(Processor* processor);
+void opcode_0xE6(Processor* processor);
+
+// Logical OR value with accumulator (A)
+
+#define LOGICAL_OR_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(OPCODE, REGISTER) \
+    void opcode_##OPCODE(Processor* processor)                                          \
+    {                                                                                   \
+        processor->A |= processor->REGISTER;                                            \
+        ++processor->PC;                                                                \
+    }
+
+void opcode_0xB7(Processor* processor);
+void opcode_0xB0(Processor* processor);
+void opcode_0xB1(Processor* processor);
+void opcode_0xB2(Processor* processor);
+void opcode_0xB3(Processor* processor);
+void opcode_0xB4(Processor* processor);
+void opcode_0xB5(Processor* processor);
+void opcode_0xB6(Processor* processor);
+void opcode_0xF6(Processor* processor);
+
+// Logical XOR value with accumulator (A)
+
+#define LOGICAL_XOR_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(OPCODE, REGISTER) \
+    void opcode_##OPCODE(Processor* processor)                                           \
+    {                                                                                    \
+        processor->A ^= processor->REGISTER;                                             \
+        ++processor->PC;                                                                 \
+    }
+
+void opcode_0xAF(Processor* processor);
+void opcode_0xA8(Processor* processor);
+void opcode_0xA9(Processor* processor);
+void opcode_0xAA(Processor* processor);
+void opcode_0xAB(Processor* processor);
+void opcode_0xAC(Processor* processor);
+void opcode_0xAD(Processor* processor);
+void opcode_0xAE(Processor* processor);
+void opcode_0xEE(Processor* processor);
+
+// Compare value with accumulator (A)
+
+#define COMPARE_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(OPCODE, REGISTER) \
+    void opcode_##OPCODE(Processor* processor)                                       \
+    {                                                                                \
+        uint8_t UNUSED(result) = processor->A - processor->REGISTER;                 \
+        ++processor->PC;                                                             \
+    }
+
+void opcode_0xBF(Processor* processor);
+void opcode_0xB8(Processor* processor);
+void opcode_0xB9(Processor* processor);
+void opcode_0xBA(Processor* processor);
+void opcode_0xBB(Processor* processor);
+void opcode_0xBC(Processor* processor);
+void opcode_0xBD(Processor* processor);
+void opcode_0xBE(Processor* processor);
+void opcode_0xFE(Processor* processor);
+
+// Increment value in location
+
+#define INCREMENT_REGISTER_8_INSTRUCTION_DEFINITION(OPCODE, REGISTER)  \
+    void opcode_##OPCODE(Processor* processor)                         \
+    {                                                                  \
+        ++processor->REGISTER;                                         \
+        ++processor->PC;                                               \
+    }
+
+void opcode_0x3C(Processor* processor);
+void opcode_0x04(Processor* processor);
+void opcode_0x0C(Processor* processor);
+void opcode_0x14(Processor* processor);
+void opcode_0x1C(Processor* processor);
+void opcode_0x24(Processor* processor);
+void opcode_0x2C(Processor* processor);
+void opcode_0x34(Processor* processor);
+
+// Decrement value in location
+
+#define DECREMENT_REGISTER_8_INSTRUCTION_DEFINITION(OPCODE, REGISTER)  \
+    void opcode_##OPCODE(Processor* processor)                         \
+    {                                                                  \
+        --processor->REGISTER;                                         \
+        ++processor->PC;                                               \
+    }
+
+void opcode_0x3D(Processor* processor);
+void opcode_0x05(Processor* processor);
+void opcode_0x0D(Processor* processor);
+void opcode_0x15(Processor* processor);
+void opcode_0x1D(Processor* processor);
+void opcode_0x25(Processor* processor);
+void opcode_0x2D(Processor* processor);
+void opcode_0x35(Processor* processor);
+
+/** @} */ // End of 8-Bit ALU Operations

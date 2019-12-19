@@ -101,3 +101,215 @@ void opcode_0x31(Processor* processor)
     processor->SP = immediate;
     processor->PC += 3;
 }
+
+/// Add Value to Accumulator (A)
+
+ADD_REGISTER_8_TO_ACCUMULATOR_INSTRUCTION_DEFINITION(0x87, A)
+ADD_REGISTER_8_TO_ACCUMULATOR_INSTRUCTION_DEFINITION(0x80, B)
+ADD_REGISTER_8_TO_ACCUMULATOR_INSTRUCTION_DEFINITION(0x81, C)
+ADD_REGISTER_8_TO_ACCUMULATOR_INSTRUCTION_DEFINITION(0x82, D)
+ADD_REGISTER_8_TO_ACCUMULATOR_INSTRUCTION_DEFINITION(0x83, E)
+ADD_REGISTER_8_TO_ACCUMULATOR_INSTRUCTION_DEFINITION(0x84, H)
+ADD_REGISTER_8_TO_ACCUMULATOR_INSTRUCTION_DEFINITION(0x85, L)
+
+void opcode_0x86(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    processor->A += processor->memory->memory[addr];
+    ++processor->PC;
+}
+
+void opcode_0xC6(Processor* processor)
+{
+    processor->A += processor->memory->memory[processor->PC + 1];
+    processor->PC += 2;
+}
+
+/// Add Value and Carry to Accumulator (A)
+
+ADD_REGISTER_8_AND_CARRY_TO_ACCUMULATOR_INSTRUCTION_DEFINITION(0x8F, A)
+ADD_REGISTER_8_AND_CARRY_TO_ACCUMULATOR_INSTRUCTION_DEFINITION(0x88, B)
+ADD_REGISTER_8_AND_CARRY_TO_ACCUMULATOR_INSTRUCTION_DEFINITION(0x89, C)
+ADD_REGISTER_8_AND_CARRY_TO_ACCUMULATOR_INSTRUCTION_DEFINITION(0x8A, D)
+ADD_REGISTER_8_AND_CARRY_TO_ACCUMULATOR_INSTRUCTION_DEFINITION(0x8B, E)
+ADD_REGISTER_8_AND_CARRY_TO_ACCUMULATOR_INSTRUCTION_DEFINITION(0x8C, H)
+ADD_REGISTER_8_AND_CARRY_TO_ACCUMULATOR_INSTRUCTION_DEFINITION(0x8D, L)
+
+void opcode_0x8E(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    processor->A += processor->memory->memory[addr] + ((processor->F & 0x10) >> 4);
+    ++processor->PC;
+}
+
+void opcode_0xCE(Processor* processor)
+{
+    processor->A += processor->memory->memory[processor->PC + 1] + ((processor->F & 0x10) >> 4);
+    processor->PC += 2;
+}
+
+/// Subtract Value from Accumulator (A)
+
+SUB_REGISTER_8_FROM_ACCUMULATOR_INSTRUCTION_DEFINITION(0x97, A)
+SUB_REGISTER_8_FROM_ACCUMULATOR_INSTRUCTION_DEFINITION(0x90, B)
+SUB_REGISTER_8_FROM_ACCUMULATOR_INSTRUCTION_DEFINITION(0x91, C)
+SUB_REGISTER_8_FROM_ACCUMULATOR_INSTRUCTION_DEFINITION(0x92, D)
+SUB_REGISTER_8_FROM_ACCUMULATOR_INSTRUCTION_DEFINITION(0x93, E)
+SUB_REGISTER_8_FROM_ACCUMULATOR_INSTRUCTION_DEFINITION(0x94, H)
+SUB_REGISTER_8_FROM_ACCUMULATOR_INSTRUCTION_DEFINITION(0x95, L)
+
+void opcode_0x96(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    processor->A -= processor->memory->memory[addr];
+    ++processor->PC;
+}
+
+void opcode_0xD6(Processor* processor)
+{
+    processor->A -= processor->memory->memory[processor->PC + 1];
+    processor->PC += 2;
+}
+
+/// Subtract Value and Carry from Accumulator (A)
+
+SUB_REGISTER_8_AND_CARRY_FROM_ACCUMULATOR_INSTRUCTION_DEFINITION(0x9F, A)
+SUB_REGISTER_8_AND_CARRY_FROM_ACCUMULATOR_INSTRUCTION_DEFINITION(0x98, B)
+SUB_REGISTER_8_AND_CARRY_FROM_ACCUMULATOR_INSTRUCTION_DEFINITION(0x99, C)
+SUB_REGISTER_8_AND_CARRY_FROM_ACCUMULATOR_INSTRUCTION_DEFINITION(0x9A, D)
+SUB_REGISTER_8_AND_CARRY_FROM_ACCUMULATOR_INSTRUCTION_DEFINITION(0x9B, E)
+SUB_REGISTER_8_AND_CARRY_FROM_ACCUMULATOR_INSTRUCTION_DEFINITION(0x9C, H)
+SUB_REGISTER_8_AND_CARRY_FROM_ACCUMULATOR_INSTRUCTION_DEFINITION(0x9D, L)
+
+void opcode_0x9E(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    processor->A -= processor->memory->memory[addr] + ((processor->F & 0x10) >> 4);
+    ++processor->PC;
+}
+
+/// Logical AND Value with Accumulator (A)
+
+LOGICAL_AND_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xA7, A)
+LOGICAL_AND_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xA0, B)
+LOGICAL_AND_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xA1, C)
+LOGICAL_AND_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xA2, D)
+LOGICAL_AND_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xA3, E)
+LOGICAL_AND_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xA4, H)
+LOGICAL_AND_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xA5, L)
+
+void opcode_0xA6(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    processor->A &= processor->memory->memory[addr];
+    ++processor->PC;
+}
+
+void opcode_0xE6(Processor* processor)
+{
+    processor->A &= processor->memory->memory[processor->PC + 1];
+    processor->PC += 2;
+}
+
+/// Logical OR Value with Accumulator (A)
+
+LOGICAL_OR_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xB7, A)
+LOGICAL_OR_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xB0, B)
+LOGICAL_OR_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xB1, C)
+LOGICAL_OR_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xB2, D)
+LOGICAL_OR_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xB3, E)
+LOGICAL_OR_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xB4, H)
+LOGICAL_OR_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xB5, L)
+
+void opcode_0xB6(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    processor->A |= processor->memory->memory[addr];
+    ++processor->PC;
+}
+
+void opcode_0xF6(Processor* processor)
+{
+    processor->A |= processor->memory->memory[processor->PC + 1];
+    processor->PC += 2;
+}
+
+/// Logical XOR Value with Accumulator (A)
+
+LOGICAL_XOR_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xAF, A)
+LOGICAL_XOR_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xA8, B)
+LOGICAL_XOR_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xA9, C)
+LOGICAL_XOR_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xAA, D)
+LOGICAL_XOR_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xAB, E)
+LOGICAL_XOR_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xAC, H)
+LOGICAL_XOR_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xAD, L)
+
+void opcode_0xAE(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    processor->A ^= processor->memory->memory[addr];
+    ++processor->PC;
+}
+
+void opcode_0xEE(Processor* processor)
+{
+    processor->A ^= processor->memory->memory[processor->PC + 1];
+    processor->PC += 2;
+}
+
+/// Compare Value with Accumulator (A)
+
+COMPARE_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xBF, A)
+COMPARE_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xB8, B)
+COMPARE_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xB9, C)
+COMPARE_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xBA, D)
+COMPARE_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xBB, E)
+COMPARE_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xBC, H)
+COMPARE_REGISTER_8_WITH_ACCUMULATOR_INSTRUCTION_DEFINITION(0xBD, L)
+
+void opcode_0xBE(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    uint8_t UNUSED(result) = processor->A - processor->memory->memory[addr];
+    ++processor->PC;
+}
+
+void opcode_0xFE(Processor* processor)
+{
+    uint8_t UNUSED(result) = processor->A - processor->memory->memory[processor->PC + 1];
+    processor->PC += 2;
+}
+
+/// Increment Value
+
+INCREMENT_REGISTER_8_INSTRUCTION_DEFINITION(0x3C, A)
+INCREMENT_REGISTER_8_INSTRUCTION_DEFINITION(0x04, B)
+INCREMENT_REGISTER_8_INSTRUCTION_DEFINITION(0x0C, C)
+INCREMENT_REGISTER_8_INSTRUCTION_DEFINITION(0x14, D)
+INCREMENT_REGISTER_8_INSTRUCTION_DEFINITION(0x1C, E)
+INCREMENT_REGISTER_8_INSTRUCTION_DEFINITION(0x24, H)
+INCREMENT_REGISTER_8_INSTRUCTION_DEFINITION(0x2C, L)
+
+void opcode_0x34(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    ++processor->memory->memory[addr];
+    ++processor->PC;
+}
+
+/// Decrement Value
+
+DECREMENT_REGISTER_8_INSTRUCTION_DEFINITION(0x3D, A)
+DECREMENT_REGISTER_8_INSTRUCTION_DEFINITION(0x05, B)
+DECREMENT_REGISTER_8_INSTRUCTION_DEFINITION(0x0D, C)
+DECREMENT_REGISTER_8_INSTRUCTION_DEFINITION(0x15, D)
+DECREMENT_REGISTER_8_INSTRUCTION_DEFINITION(0x1D, E)
+DECREMENT_REGISTER_8_INSTRUCTION_DEFINITION(0x25, H)
+DECREMENT_REGISTER_8_INSTRUCTION_DEFINITION(0x2D, L)
+
+void opcode_0x35(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    --processor->memory->memory[addr];
+    ++processor->PC;
+}
