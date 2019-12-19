@@ -108,6 +108,29 @@ void opcode_0x6E(Processor* processor);
 /** @} */ // End of 8-Bit Register-to-Register Loads
 
 /**
+ * @defgroup Miscellaneous 8-Bit Loads
+ */
+
+// Read and Write $FF00 with Some Offset in C
+
+void opcode_0xF2(Processor* processor);
+void opcode_0xE2(Processor* processor);
+
+// 8-bit Load and Increment
+
+void opcode_0x3A(Processor* processor);
+void opcode_0x32(Processor* processor);
+void opcode_0x2A(Processor* processor);
+void opcode_0x22(Processor* processor);
+
+// Read and Write $FF00 with Some Immediate Offset
+
+void opcode_0xE0(Processor* processor);
+void opcode_0xF0(Processor* processor);
+
+/** @} */ // End of 8-Bit Miscellaneous Loads
+
+/**
  * @defgroup Load Memory Address into 8-Bit Register
  * Load the contents of some address in memory (addressed by HL) into an 8-bit register
  */

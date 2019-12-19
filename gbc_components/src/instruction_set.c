@@ -87,6 +87,80 @@ LOAD_REGISTER_INTO_HL_PTR_INSTRUCTION_DEFINITION(0x73, E)
 LOAD_REGISTER_INTO_HL_PTR_INSTRUCTION_DEFINITION(0x74, H)
 LOAD_REGISTER_INTO_HL_PTR_INSTRUCTION_DEFINITION(0x75, L)
 
+/// Read and Write $FF00 with Some Offset in C
+
+void opcode_0xF2(Processor* processor)
+{
+    uint16_t addr = 0xFF00 + (uint16_t)processor->C;
+    processor->A = processor->memory->memory[addr];
+    ++processor->PC;
+}
+
+void opcode_0xE2(Processor* processor)
+{
+    uint16_t addr = 0xFF00 + (uint16_t)processor->C;
+    processor->memory->memory[addr] = processor->A;
+    ++processor->PC;
+}
+
+/// 8-bit Load and Increment
+
+void opcode_0x3A(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    processor->A = processor->memory->memory[addr];
+    --addr;
+    processor->H = (uint8_t)(addr >> 8);
+    processor->L = (uint8_t)addr;
+    ++processor->PC;
+}
+
+void opcode_0x32(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    processor->memory->memory[addr] = processor->A;
+    --addr;
+    processor->H = (uint8_t)(addr >> 8);
+    processor->L = (uint8_t)addr;
+    ++processor->PC;
+}
+
+void opcode_0x2A(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    processor->A = processor->memory->memory[addr];
+    ++addr;
+    processor->H = (uint8_t)(addr >> 8);
+    processor->L = (uint8_t)addr;
+    ++processor->PC;
+}
+
+void opcode_0x22(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    processor->memory->memory[addr] = processor->A;
+    ++addr;
+    processor->H = (uint8_t)(addr >> 8);
+    processor->L = (uint8_t)addr;
+    ++processor->PC;
+}
+
+/// Read and Write $FF00 with Some Immediate Offset
+
+void opcode_0xE0(Processor* processor)
+{
+    uint16_t addr = 0xFF00 + (uint8_t)(processor->memory->memory[processor->PC + 1]);
+    processor->memory->memory[addr] = processor->A;
+    processor->PC += 2;
+}
+
+void opcode_0xF0(Processor* processor)
+{
+    uint16_t addr = 0xFF00 + (uint8_t)(processor->memory->memory[processor->PC + 1]);
+    processor->A = processor->memory->memory[addr];
+    processor->PC += 2;
+}
+
 /// 16-Bit Immediate Loads
 
 LOAD_IMMEDIATE_16_REGISTER_INSTRUCTION_DEFINITION(0x01, B, C)
