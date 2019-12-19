@@ -431,3 +431,138 @@ void opcode_0x3B(Processor* processor)
     --processor->SP;
     ++processor->PC;
 }
+
+/// Swap Higher and Lower Nibbles of Value
+
+void opcode_0xCB_0x37(Processor* processor)
+{
+    uint8_t upper_A = processor->A & 0xF0;
+    uint8_t lower_A = processor->A & 0x0F;
+    processor->A = (uint8_t)(upper_A >> 4) | (uint8_t)(lower_A << 4);
+    ++processor->PC;
+}
+
+void opcode_0xCB_0x30(Processor* processor)
+{
+    uint8_t upper_B = processor->B & 0xF0;
+    uint8_t lower_B = processor->B & 0x0F;
+    processor->B = (uint8_t)(upper_B >> 4) | (uint8_t)(lower_B << 4);
+    ++processor->PC;
+}
+
+void opcode_0xCB_0x31(Processor* processor)
+{
+    uint8_t upper_C = processor->C & 0xF0;
+    uint8_t lower_C = processor->C & 0x0F;
+    processor->C = (uint8_t)(upper_C >> 4) | (uint8_t)(lower_C << 4);
+    ++processor->PC;
+}
+
+void opcode_0xCB_0x32(Processor* processor)
+{
+    uint8_t upper_D = processor->D & 0xF0;
+    uint8_t lower_D = processor->D & 0x0F;
+    processor->D = (uint8_t)(upper_D >> 4) | (uint8_t)(lower_D << 4);
+    ++processor->PC;
+}
+
+void opcode_0xCB_0x33(Processor* processor)
+{
+    uint8_t upper_E = processor->E & 0xF0;
+    uint8_t lower_E = processor->E & 0x0F;
+    processor->E = (uint8_t)(upper_E >> 4) | (uint8_t)(lower_E << 4);
+    ++processor->PC;
+}
+
+void opcode_0xCB_0x34(Processor* processor)
+{
+    uint8_t upper_H = processor->H & 0xF0;
+    uint8_t lower_H = processor->H & 0x0F;
+    processor->H = (uint8_t)(upper_H >> 4) | (uint8_t)(lower_H << 4);
+    ++processor->PC;
+}
+
+void opcode_0xCB_0x35(Processor* processor)
+{
+    uint8_t upper_L = processor->L & 0xF0;
+    uint8_t lower_L = processor->L & 0x0F;
+    processor->L = (uint8_t)(upper_L >> 4) | (uint8_t)(lower_L << 4);
+    ++processor->PC;
+}
+
+void opcode_0xCB_0x36(Processor* processor)
+{
+    uint16_t addr = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    uint8_t val = processor->memory->memory[addr];
+    uint8_t upper_val = val & 0xF0;
+    uint8_t lower_val = val & 0x0F;
+    processor->memory->memory[addr] = (uint8_t)(upper_val >> 4) | (uint8_t)(lower_val << 4);
+    ++processor->PC;
+}
+
+/// Adjust for Binary Coded Decimal
+
+void opcode_0x27(Processor* UNUSED(processor))
+{
+    // Add this later
+}
+
+/// Complement Accumulator (A)
+
+void opcode_0x2F(Processor* processor)
+{
+    processor->A = ~processor->A;
+    ++processor->PC;
+}
+
+/// Carry Flag Operations
+
+void opcode_0x3F(Processor* processor)
+{
+    processor->F ^= 0x10;
+    ++processor->PC;
+}
+
+void opcode_0x37(Processor* processor)
+{
+    processor->F |= 0x10;
+    ++processor->PC;
+}
+
+/// High-Level Process Control & Interrupts
+
+void opcode_0x00(Processor* UNUSED(processor))
+{
+    // No-op
+}
+
+void opcode_0x76(Processor* processor)
+{
+    processor->halted = true;
+    ++processor->PC;
+}
+
+void opcode_0x10(Processor* processor)
+{
+    processor->stopped = true;
+    // Some manuals require 0x00 to be present in the byte after 0x10. If this is the case, skip
+    // over it, otherwise, assume the next byte is the next instruction.
+    uint8_t following_inst = processor->memory->memory[processor->PC + 1];
+    if(following_inst == 0x00) {
+        processor->PC += 2;
+    } else {
+        ++processor->PC;
+    }
+}
+
+void opcode_0xF3(Processor* processor)
+{
+    processor->interrupts_enabled = false;
+    ++processor->PC;
+}
+
+void opcode_0xFB(Processor* processor)
+{
+    processor->interrupts_enabled = true;
+    ++processor->PC;
+}

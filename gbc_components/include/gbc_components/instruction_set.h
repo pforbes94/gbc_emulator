@@ -398,3 +398,42 @@ void opcode_0x2B(Processor* processor);
 void opcode_0x3B(Processor* processor);
 
 /** @} */ // End of 16-Bit ALU Operations
+
+/**
+ * @defgroup Miscellaneous Operations
+ * Various additional operations available in the processor ISA.
+ */
+
+// Swap higher and lower nibbles of the specified location
+
+void opcode_0xCB_0x37(Processor* processor);
+void opcode_0xCB_0x30(Processor* processor);
+void opcode_0xCB_0x31(Processor* processor);
+void opcode_0xCB_0x32(Processor* processor);
+void opcode_0xCB_0x33(Processor* processor);
+void opcode_0xCB_0x34(Processor* processor);
+void opcode_0xCB_0x35(Processor* processor);
+void opcode_0xCB_0x36(Processor* processor);
+
+// Adjust for binary coded decimal
+
+void opcode_0x27(Processor* processor);
+
+// Complement (only available for A(ccumulator))
+
+void opcode_0x2F(Processor* processor);
+
+// Carry flag operations
+
+void opcode_0x3F(Processor* processor);
+void opcode_0x37(Processor* processor);
+
+// High-level process control & interrupts
+
+void opcode_0x00(Processor* processor);
+void opcode_0x76(Processor* processor);
+void opcode_0x10(Processor* processor);
+void opcode_0xF3(Processor* processor);
+void opcode_0xFB(Processor* processor);
+
+/** @} */ // End of Miscellaneous Operations
