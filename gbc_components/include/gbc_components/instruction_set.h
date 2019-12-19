@@ -366,3 +366,35 @@ void opcode_0x2D(Processor* processor);
 void opcode_0x35(Processor* processor);
 
 /** @} */ // End of 8-Bit ALU Operations
+
+/**
+ * @defgroup 16-Bit ALU Operations
+ * 16-bit arithmetic operations.
+ */
+
+// Add value to HL
+
+void opcode_0x09(Processor* processor);
+void opcode_0x19(Processor* processor);
+void opcode_0x29(Processor* processor);
+void opcode_0x39(Processor* processor);
+
+// Add value to stack pointer (SP)
+
+void opcode_0xE8(Processor* processor);
+
+// Increment 16-bit registers
+
+void opcode_0x03(Processor* processor);
+void opcode_0x13(Processor* processor);
+void opcode_0x23(Processor* processor);
+void opcode_0x33(Processor* processor);
+
+// Decrement 16-bit registers
+
+void opcode_0x0B(Processor* processor);
+void opcode_0x1B(Processor* processor);
+void opcode_0x2B(Processor* processor);
+void opcode_0x3B(Processor* processor);
+
+/** @} */ // End of 16-Bit ALU Operations

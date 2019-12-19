@@ -313,3 +313,121 @@ void opcode_0x35(Processor* processor)
     --processor->memory->memory[addr];
     ++processor->PC;
 }
+
+/// Add Value to Memory Location Addressed by HL
+
+void opcode_0x09(Processor* processor)
+{
+    uint16_t hl = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    uint16_t bc = (uint16_t)(((uint16_t)processor->B << 8) + processor->C);
+    uint16_t result = hl + bc;
+    processor->H = (uint8_t)(result >> 8);
+    processor->L = (uint8_t)(result);
+    ++processor->PC;
+}
+
+void opcode_0x19(Processor* processor)
+{
+    uint16_t hl = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    uint16_t de = (uint16_t)(((uint16_t)processor->D << 8) + processor->E);
+    uint16_t result = hl + de;
+    processor->H = (uint8_t)(result >> 8);
+    processor->L = (uint8_t)(result);
+    ++processor->PC;
+}
+
+void opcode_0x29(Processor* processor)
+{
+    uint16_t hl = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    uint16_t result = hl + hl;
+    processor->H = (uint8_t)(result >> 8);
+    processor->L = (uint8_t)(result);
+    ++processor->PC;
+}
+
+void opcode_0x39(Processor* processor)
+{
+    uint16_t hl = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    uint16_t result = hl + processor->SP;
+    processor->H = (uint8_t)(result >> 8);
+    processor->L = (uint8_t)(result);
+    ++processor->PC;
+}
+
+/// Add Value to Stack Pointer (SP)
+
+void opcode_0xE8(Processor* processor)
+{
+    processor->SP += (uint16_t)(processor->memory->memory[processor->PC + 1]);
+    processor->PC += 2;
+}
+
+/// Increment 16-Bit Registers
+
+void opcode_0x03(Processor* processor)
+{
+    uint16_t bc = (uint16_t)(((uint16_t)processor->B << 8) + processor->C);
+    ++bc;
+    processor->B = (uint8_t)(bc >> 8);
+    processor->C = (uint8_t)(bc);
+    ++processor->PC;
+}
+
+void opcode_0x13(Processor* processor)
+{
+    uint16_t de = (uint16_t)(((uint16_t)processor->D << 8) + processor->E);
+    ++de;
+    processor->D = (uint8_t)(de >> 8);
+    processor->E = (uint8_t)(de);
+    ++processor->PC;
+}
+
+void opcode_0x23(Processor* processor)
+{
+    uint16_t hl = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    ++hl;
+    processor->H = (uint8_t)(hl >> 8);
+    processor->L = (uint8_t)(hl);
+    ++processor->PC;
+}
+
+void opcode_0x33(Processor* processor)
+{
+    ++processor->SP;
+    ++processor->PC;
+}
+
+/// Decrement 16-Bit Registers
+
+void opcode_0x0B(Processor* processor)
+{
+    uint16_t bc = (uint16_t)(((uint16_t)processor->B << 8) + processor->C);
+    --bc;
+    processor->B = (uint8_t)(bc >> 8);
+    processor->C = (uint8_t)(bc);
+    ++processor->PC;
+}
+
+void opcode_0x1B(Processor* processor)
+{
+    uint16_t de = (uint16_t)(((uint16_t)processor->D << 8) + processor->E);
+    --de;
+    processor->D = (uint8_t)(de >> 8);
+    processor->E = (uint8_t)(de);
+    ++processor->PC;
+}
+
+void opcode_0x2B(Processor* processor)
+{
+    uint16_t hl = (uint16_t)(((uint16_t)processor->H << 8) + processor->L);
+    --hl;
+    processor->H = (uint8_t)(hl >> 8);
+    processor->L = (uint8_t)(hl);
+    ++processor->PC;
+}
+
+void opcode_0x3B(Processor* processor)
+{
+    --processor->SP;
+    ++processor->PC;
+}
