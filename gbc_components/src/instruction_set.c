@@ -86,3 +86,18 @@ LOAD_REGISTER_INTO_HL_PTR_INSTRUCTION_DEFINITION(0x72, D)
 LOAD_REGISTER_INTO_HL_PTR_INSTRUCTION_DEFINITION(0x73, E)
 LOAD_REGISTER_INTO_HL_PTR_INSTRUCTION_DEFINITION(0x74, H)
 LOAD_REGISTER_INTO_HL_PTR_INSTRUCTION_DEFINITION(0x75, L)
+
+/// 16-Bit Immediate Loads
+
+LOAD_IMMEDIATE_16_REGISTER_INSTRUCTION_DEFINITION(0x01, B, C)
+LOAD_IMMEDIATE_16_REGISTER_INSTRUCTION_DEFINITION(0x11, D, E)
+LOAD_IMMEDIATE_16_REGISTER_INSTRUCTION_DEFINITION(0x21, H, L)
+
+void opcode_0x31(Processor* processor)
+{
+    uint16_t highByte = (uint16_t)(processor->memory->memory[processor->PC + 1]);
+    uint16_t lowByte = (uint16_t)(processor->memory->memory[processor->PC + 2]);
+    uint16_t immediate = (uint16_t)(highByte << 8) + lowByte;
+    processor->SP = immediate;
+    processor->PC += 3;
+}

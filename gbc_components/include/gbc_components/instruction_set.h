@@ -151,3 +151,23 @@ void opcode_0x74(Processor* processor);
 void opcode_0x75(Processor* processor);
 
 /** @} */ // End of Load 8-bit Register Content Into Memory
+
+/**
+ * @defgroup 16-Bit Immediate Loads
+ * Opcodes that load an immediate value into a specific register.
+ */
+
+#define LOAD_IMMEDIATE_16_REGISTER_INSTRUCTION_DEFINITION(OPCODE, HIGH_REGISTER, LOW_REGISTER) \
+    void opcode_##OPCODE(Processor* processor)                                                 \
+    {                                                                                          \
+        processor->HIGH_REGISTER = processor->memory->memory[processor->PC + 1];               \
+        processor->LOW_REGISTER = processor->memory->memory[processor->PC + 2];                \
+        processor->PC += 3;                                                                    \
+    }
+
+void opcode_0x01(Processor* processor);
+void opcode_0x11(Processor* processor);
+void opcode_0x21(Processor* processor);
+void opcode_0x31(Processor* processor);
+
+/** @} */ // End of 16-Bit Immediate Loads
